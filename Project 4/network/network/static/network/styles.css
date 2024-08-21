@@ -1,0 +1,21 @@
+.body {
+    padding: 1.5%;
+}
+
+.post-card-outer {
+    justify-content: center;
+}
+
+.post-card-inner:hover {
+    transform: scale(1.01);
+    border-width: 3px;
+    background-color: rgb(245, 245, 245);
+}
+
+#profile-card {
+    justify-content: center;
+}
+
+#new-post-card {
+    justify-content: center;
+}

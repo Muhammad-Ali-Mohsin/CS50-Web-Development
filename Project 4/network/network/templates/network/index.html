@@ -1,0 +1,37 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <script src="{% static 'network/posts.js' %}"></script>
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="row" id="new-post-card">
+        <div class="card card-body col-sm-6">
+            {% if user.is_authenticated %}
+                <h3>Create New Post</h3>
+                <form>
+                    {{ form.content }}
+                    <br>
+                    <button type="button" id="new-post-btn" class="btn btn-secondary" disabled>Create Post</button>
+                </form>
+            {% else %}
+                <div>
+                    <p>Make an account to create new posts</p>
+                    <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+                </div>
+
+                <input type="text" id="new-post-input" style="display:none;">
+                <button type="button" id="new-post-btn" class="btn btn-secondary" disabled style="display:none;">Create Post</button>
+                
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <div id="message-div"></div>
+
+    <div id="posts"></div>
+    <ul class="pagination justify-content-center" id="page-list"></ul>
+
+{% endblock %}
