@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="text-center";">All Categories</h2>
+
+    <br>
+
+    {% for category in categories %}
+        <div class="row listing-card-outer">
+            <div class="col-sm-6">
+                <div class="card listing-card-inner">
+                    <div class="row card-body">
+                        <div class="col-sm-6">
+                            <h5 class="card-title">{{ category.name }}</h5>
+                            <p class="card-text">{{ category.description }}</p>
+                            <a href="{% url 'category' category.id %}" class="btn btn-primary">View Category</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+    {% empty %}
+
+        <div class="alert alert-warning text-center" role="alert">
+            There are no categories! Check back later.
+        </div>
+
+        <br>
+        
+        <div class="text-center">
+            <a href="{% url 'index' %}" class="btn btn-primary">View all Listings</a>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

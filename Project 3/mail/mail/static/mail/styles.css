@@ -1,0 +1,10 @@
+textarea {
+    min-height: 400px;
+}
+
+.email-item:hover {
+    transform: scale(1.01);
+    border-width: 3px;
+    background-color: rgb(245, 245, 245);
+    cursor: pointer;
+}

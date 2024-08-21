@@ -1,0 +1,146 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h1>{{ listing.title }}</h1>
+
+    {% if listing.image_url != "" %}
+
+        <br>
+        <div>
+            <img src="{{ listing.image_url }}" class= "col-sm-6 text-center" alt="Listing Image - {{ listing.id }}" style="max-width: 20%;">
+        </div>
+
+    {% endif %}
+
+    <br>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Listing Details</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ listing.description }}</li>
+            <li class="list-group-item">Category: <a href="{% url 'category' listing.category.id %}">{{ listing.category.name }}</a></li>
+            <li class="list-group-item">Sold by: {{ listing.seller }}</li>
+        </ul>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <div class="card-header">
+            <p class="card-title">Watchlist</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <form action="{% url 'watchlist_add' listing.id %}" method="post">
+                    {% csrf_token %}
+                    {% if watchlisted %}
+                        <p>You have this item watchlisted</p>
+                        <input type="submit" value="Remove from Watchlist" class="btn btn-primary">
+                    {% else %}
+                        <p>You do not have this item watchlisted</p>
+                        <input type="submit" value="Add to Watchlist" class="btn btn-primary">
+                    {% endif %}
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+
+    {% if request.user.is_authenticated and not is_theirs and not is_closed %}
+
+        <div class="card">
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <h5>Current Price: ${{ listing.current_price }}</h5>
+                <p>{{ bids }} bid(s) so far</p>
+
+                {% if current %}
+                    <p>Your bid is the current bid.</p>
+                {% endif %}
+
+                <form action="{% url 'bid' listing.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-3" style="width: 30%;">
+                        <span class="input-group-text">$</span>
+                        {{ form.amount }}
+                    </div>
+                    <input type="submit" value="Submit Bid" class="btn btn-primary">
+                </form>
+            </li>
+            </ul>
+        </div>
+
+    {% elif is_closed %}
+
+        {% if winner != -1 %}
+
+            <div class="alert alert-success" role="alert">
+                {{ winner }} has won this auction for ${{ listing.current_price }}!
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-danger" role="alert">
+                This auction was closed without any bids placed!
+            </div>
+        {% endif %}
+
+    {% elif is_theirs %}
+
+        <div class="card">
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <h5>Current Price: ${{ listing.current_price }}</h5>
+                <p>{{ bids }} bid(s) so far</p>
+                <p>This is your Listing</p>
+                <a href="{% url 'close' listing.id %}" class="btn btn-primary">Close Listing</a>
+                </form>
+            </li>
+            </ul>
+        </div>
+
+    {% else %}
+        <a href="{% url 'register' %}" class="btn btn-primary">Register to place a bid</a>
+    {% endif %}
+
+    <hr>
+
+    <div class="card">
+        <div class="card-header">
+            <p class="card-title">Comments</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for comment in comments %}
+
+                <li class="list-group-item">
+                    <h6>{{ comment.commenter }}</h6>
+                    <small>{{ comment.time_created }}</small>
+                    <p>{{ comment.comment }}</p>
+                </li>
+
+            {% empty %}
+                <li class="list-group-item"><p>There are no comments! Be the first to add one...</p></li>
+            {% endfor %}
+
+            <div class="card-footer">
+                {% if request.user.is_authenticated %}
+                    <form action="{% url 'comment' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            {{ comment_form.comment }}
+                            <input type="submit" value="Submit Comment" class="btn btn-primary">
+                        </div> 
+                    </form>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn btn-primary">Register to comment</a>
+                {% endif %}
+            </div>
+
+        </ul>
+    </div>
+
+{% endblock %}

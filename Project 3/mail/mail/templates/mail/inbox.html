@@ -1,0 +1,64 @@
+{% extends "mail/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <h2>{{ request.user.email }}</h2>
+
+    <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
+    <button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
+    <button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
+    <button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>
+    <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
+    <hr>
+
+    <div id="emails-view">
+        <h3 id="emails-title"></h3>
+        <ul id="emails-list" class="list-group"></ul>
+    </div>
+
+    <div id="email-view">
+        <br>
+        <h3 id="email-subject">Email Subject</h3>
+        <hr>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <small id="email-sender">Sent by: [sender]</small><br>
+                <small id="email-recipients">Recipients: [recipients]</small><br>
+                <small id="email-timestamp">Received: [timestamp]</small>
+            </li>
+        </ul>
+        <br>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <p id="email-body"></p>
+            </li>
+        </ul>
+        <br>
+        <button class="btn btn-primary" id="btn-archive">Archive Email</button>
+        <br>
+        <button class="btn btn-primary" id="btn-reply">Reply to Email</button>
+    </div>
+
+    <div id="compose-view">
+        <h3>New Email</h3>
+        <form id="compose-form">
+            <div class="form-group">
+                From: <input disabled class="form-control" value="{{ request.user.email }}">
+            </div>
+            <div class="form-group">
+                To: <input id="compose-recipients" class="form-control">
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="compose-subject" placeholder="Subject">
+            </div>
+            <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
+            <br>
+            <div class="alert alert-danger" role="alert" id="compose-error"></div>
+            <input type="submit" class="btn btn-primary" id="send-email" value="Send Email">
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'mail/inbox.js' %}"></script>
+{% endblock %}

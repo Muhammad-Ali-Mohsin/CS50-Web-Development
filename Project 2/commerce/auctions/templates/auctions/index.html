@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="text-center";">Active Listings</h2>
+
+    <br>
+
+    {% for listing in listings %}
+        <div class="row listing-card-outer">
+            <div class="col-sm-6">
+                <div class="card listing-card-inner">
+                    <div class="row card-body">
+                        <div class="col-sm-6">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Sold by: {{ listing.seller }}</h6>
+                            <p class="card-text">{{ listing.description }}</p>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Current price: ${{ listing.current_price }}</h6>
+                            <a href="{% url 'view' listing.id %}" class="btn btn-primary">View Listing</a>
+                        </div>
+                        {% if listing.image_url != "" %}
+                            <img src="{{ listing.image_url }}" class= "col-sm-6" alt="Listing Image - {{ listing.id }}" style="max-width: 30%;">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+    {% empty %}
+
+        {% if request.user.is_authenticated %}
+
+            <div class="alert alert-warning text-center" role="alert">
+                There are no active listings! Create your own listing to get started...
+            </div>
+
+            <br>
+
+            <div class="text-center">
+                <a href="{% url 'create' %}" class="btn btn-primary">Create New Listing</a>
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-warning text-center" role="alert">
+                There are no active listings! Register to create your own listing...
+            </div>
+
+            <br>
+            
+            <div class="text-center">
+                <a href="{% url 'register' %}" class="btn btn-primary">Register Account</a>
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+
+{% endblock %}

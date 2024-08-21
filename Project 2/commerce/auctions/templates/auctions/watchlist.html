@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 class="text-center";">Watchlist</h2>
+
+    <br>
+
+    {% for listing in listings %}
+        <div class="row listing-card-outer">
+            <div class="col-sm-6">
+                <div class="card listing-card-inner">
+                    <div class="row card-body">
+                        <div class="col-sm-6">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Sold by: {{ listing.seller }}</h6>
+                            <p class="card-text">{{ listing.description }}</p>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Current price: ${{ listing.current_price }}</h6>
+                            <a href="{% url 'view' listing.id %}" class="btn btn-primary">View Listing</a>
+                        </div>
+                        {% if listing.image_url != "" %}
+                            <img src="{{ listing.image_url }}" class= "col-sm-6" alt="Listing Image - {{ listing.id }}" style="max-width: 30%;">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+    {% empty %}
+
+        <div class="alert alert-warning text-center" role="alert">
+            Your watchlist is empty! Add some listings to get started...
+        </div>
+        <br>
+        <div class="text-center">
+            <a href="{% url 'index' %}" class="btn btn-primary">View all Listings</a>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+body {
+    padding: 10px;
+}
+
+#navbar {
+    justify-content: center;
+    text-align: center;
+}
+
+.nav {
+    justify-content: center;
+}
+
+.listing-card-outer {
+    justify-content: center;
+}
+
+.listing-card-inner:hover {
+    transform: scale(1.01);
+    border-width: 3px;
+    background-color: rgb(245, 245, 245);
+}

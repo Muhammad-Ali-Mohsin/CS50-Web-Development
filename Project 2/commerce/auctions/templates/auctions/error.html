@@ -1,0 +1,10 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>There was an error!</h2>
+    {{ error }}
+    <hr>
+    <a href="{% url 'index' %}">Return to Homepage</a>
+
+{% endblock %}
